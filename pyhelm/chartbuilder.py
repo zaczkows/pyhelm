@@ -48,6 +48,9 @@ class ChartBuilder(object):
         # extract, pull, whatever the chart from its source
         self.source_directory = self.source_clone()
 
+        # user set values
+        self.values = None
+
     def source_clone(self):
         '''
         Clone the charts source
@@ -163,7 +166,15 @@ class ChartBuilder(object):
 
         return chart_files
 
-    def get_values(self):
+    def set_values(self, values):
+        '''
+        Sets chart values as a raw data in yaml format.
+        If there are multiple yaml to read or multiple values, please merge them and set values
+        to this newly generated yaml content.
+        '''
+        self.values = Config(raw=values)
+
+    def get_default_values(self):
         '''
         Return the chart (default) values
         '''
@@ -177,6 +188,16 @@ class ChartBuilder(object):
             raw_values = ''
 
         return Config(raw=raw_values)
+
+    def get_values(self):
+        '''
+        Return the chart values
+        '''
+
+        if self.values:
+            return self.values
+        else:
+            return self.get_default_values()
 
     def get_templates(self):
         '''
