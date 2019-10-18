@@ -172,7 +172,14 @@ class ChartBuilder(object):
         If there are multiple yaml to read or multiple values, please merge them and set values
         to this newly generated yaml content.
         '''
-        self.values = Config(raw=values)
+        if isinstance(values, str):
+            content = bytes(bytearray(values, encoding='utf-8'))
+        elif isinstance(values, bytearray):
+            content = bytes(values)
+        else:
+            content = values
+
+        self.values = Config(raw=content)
 
     def get_default_values(self):
         '''
